@@ -186,7 +186,7 @@ elif st.session_state.page == 'form':
                         "ลำดับ": len(df) + 1,
                         "วันที่": datetime.now().strftime("%d/%m/%Y %H:%M"),
                         "ประเภท": doc_type,
-                        "เลขที่เอกสาร": next_no,
+                        "เลขที่": next_no,
                         "เรื่อง": subject,
                         "เจ้าของเรื่อง": name
                     }])
