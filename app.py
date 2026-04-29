@@ -80,6 +80,28 @@ if st.session_state.page == 'main':
                 st.session_state.page = 'form'
                 st.rerun()
 
+        st.divider()
+        st.subheader("📊 ตรวจสอบเลขล่าสุดรายประเภท")
+        
+        # สร้าง 3 คอลัมน์สำหรับโชว์ 3 ประเภทเอกสาร
+        sum_col1, sum_col2, sum_col3 = st.columns(3)
+        
+        types = ["บันทึกข้อความ", "เลขคำสั่ง", "เลขหนังสือส่ง"]
+        cols = [sum_col1, sum_col2, sum_col3]
+        
+        for doc_type, col in zip(types, cols):
+            with col:
+                st.markdown(f"**📍 {doc_type}**")
+                # กรองข้อมูลเฉพาะประเภทนั้นๆ และหยิบ 2 แถวล่าสุด
+                filtered_df = df_last[df_last['ประเภท'] == doc_type].tail(2)
+                
+                if not filtered_df.empty:
+                    # วนลูปโชว์เลข 2 ลำดับล่าสุด
+                    for _, row in filtered_df.iloc[::-1].iterrows():
+                        st.caption(f"🔹 เลขที่: {row['เลขที่']}\n\n_{row['เรื่อง']}_")
+                else:
+                    st.caption("ยังไม่มีข้อมูล")
+
 # --- หน้ากรอกข้อมูล (Form Page) ---
 elif st.session_state.page == 'form':
     st.button("⬅️ กลับหน้าหลัก", on_click=lambda: setattr(st.session_state, 'page', 'main'))
