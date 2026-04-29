@@ -67,14 +67,29 @@ def get_data():
     return conn.read(worksheet="Data", ttl="0")
 
 # ฟังก์ชันคำนวณเลขถัดไป
+# ฟังก์ชันคำนวณเลขถัดไปแบบตั้งค่าเริ่มต้นได้
 def get_next_number(df, doc_type):
     current_year = datetime.now().year + 543
-    if df.empty:
-        return f"1/{current_year}"
     
-    # กรองเฉพาะประเภทที่เลือก
+    # --- ตั้งค่าเลขล่าสุดจากสมุดมือที่นี่ ---
+    offsets = {
+        "บันทึกข้อความ": 0,    # เริ่มใหม่ใส่ 0
+        "เลขคำสั่ง": 0,        # เริ่มใหม่ใส่ 0
+        "เลขหนังสือส่ง": 57    # ต่อจากสมุดมือเล่มเก่าที่เลข 57
+    }
+    
+    # ดึงค่าบุญเก่า (Offset) ถ้าไม่มีให้เป็น 0
+    start_num = offsets.get(doc_type, 0)
+    
+    # กรณีไม่มีข้อมูลใน Google Sheets เลย
+    if df is None or df.empty:
+        return f"{start_num + 1}/{current_year}"
+    
+    # กรองข้อมูลที่มีในระบบออนไลน์
     filtered_df = df[df['ประเภท'] == doc_type]
-    next_num = len(filtered_df) + 1
+    
+    # เลขถัดไป = (บุญเก่า) + (จำนวนแถวออนไลน์) + 1
+    next_num = start_num + len(filtered_df) + 1
     return f"{next_num}/{current_year}"
 
 # --- หน้าแรก (Main Menu) ---
