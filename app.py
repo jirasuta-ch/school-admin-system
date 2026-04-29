@@ -62,16 +62,19 @@ st.markdown("""
 # หมายเหตุ: คุณครูต้องนำ URL ของ Google Sheets มาใส่ในส่วน secrets หรือตอนใช้งานจริง
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-# ฟังก์ชันดึงข้อมูลล่าสุด
+# ฟังก์ชันดึงข้อมูลล่าสุด (ป้องกันการเกิด nan)
 def get_data():
-    return conn.read(worksheet="Data", ttl="0")
+    try:
+        df = conn.read(worksheet="Data", ttl="0")
+        return df
+    except:
+        return None
 
-# ฟังก์ชันคำนวณเลขถัดไป
-# ฟังก์ชันคำนวณเลขถัดไปแบบตั้งค่าเริ่มต้นได้
+# ฟังก์ชันคำนวณเลขถัดไปแบบตั้งค่าเริ่มต้น (Offset)
 def get_next_number(df, doc_type):
     current_year = datetime.now().year + 543
     
-    # ตั้งค่าบุญเก่า (Offset)
+    # ตั้งค่าเลขล่าสุดจากสมุดมือ (แก้ไขตัวเลขที่นี่ได้เลย)
     offsets = {
         "บันทึกข้อความ": 0,
         "เลขคำสั่ง": 0,
@@ -79,11 +82,17 @@ def get_next_number(df, doc_type):
     }
     
     start_num = offsets.get(doc_type, 0)
-
-    # ถ้าไม่มีข้อมูลใน Sheets เลย หรือกรองแล้วไม่เจอประเภทนั้น
-    # ระบบจะใช้ start_num (57) + 0 + 1 = 58 ทันที
+    
+    # กรณีไม่มีข้อมูลใน Sheets เลย ให้เริ่มที่ค่าเริ่มต้น + 1
     if df is None or df.empty:
         return f"{start_num + 1}/{current_year}"
+    
+    # กรองข้อมูลเฉพาะประเภทที่เลือก
+    filtered_df = df[df['ประเภท'] == doc_type]
+    
+    # เลขถัดไป = ค่าจากสมุดมือ + จำนวนที่ออกออนไลน์ไปแล้ว + 1
+    next_num = start_num + len(filtered_df) + 1
+    return f"{next_num}/{current_year}"
 
     # กรองข้อมูลตามประเภท
     filtered_df = df[df['ประเภท'] == doc_type]
