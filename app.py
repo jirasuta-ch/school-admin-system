@@ -32,8 +32,9 @@ if 'selected_type' not in st.session_state:
     st.session_state.selected_type = None
 
 if st.session_state.page == 'main':
-        st.title("🏛️ ระบบออกเลขสารบรรณออนไลน์")
-        st.write("กรุณาเลือกประเภทเอกสารที่ต้องการออกเลข")
+        st.title("🏫 ระบบออกเลขสารบรรณออนไลน์")
+        st.write("โรงเรียนบ้านพรหมมาสามัคคี สพป.กำแพงเพชร เขต 2")
+       
 
         # --- ส่วนที่เพิ่มใหม่: แสดงข้อมูลล่าสุด ---
         try:
@@ -56,7 +57,7 @@ if st.session_state.page == 'main':
             st.caption(f"⚠️ ไม่สามารถดึงเลขล่าสุดได้: {str(e)}")
 
         st.divider() # ขีดเส้นคั่นเพื่อความสวยงาม
-
+        st.write("กรุณาเลือกประเภทเอกสารที่ต้องการออกเลข")
         # --- ปุ่มกด 3 ปุ่มเดิมของคุณครู ---
         col1, col2, col3 = st.columns(3)
         # ... โค้ดปุ่มกดของคุณครู ...
