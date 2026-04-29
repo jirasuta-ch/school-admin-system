@@ -37,6 +37,26 @@ if st.session_state.page == 'main':
 
         # --- ส่วนที่เพิ่มใหม่: แสดงข้อมูลล่าสุด ---
         try:
+            # ใช้ฟังก์ชัน get_data() ที่คุณครูสร้างไว้ในบรรทัดที่ 14
+            df_last = get_data() 
+            
+            if df_last is not None and not df_last.empty:
+                last_row = df_last.iloc[-1]
+                
+                # ดึงค่ามาโชว์ (เช็คชื่อหัวตารางใน Sheets ให้ตรงกันนะครับ)
+                l_no = last_row.get('เลขที่', 'ไม่มีข้อมูล')
+                l_sub = last_row.get('เรื่อง', 'ไม่มีข้อมูล')
+                l_date = last_row.get('วันที่', 'ไม่มีข้อมูล')
+                
+                st.info(f"📢 **เลขล่าสุด:** {l_no} | **เรื่อง:** {l_sub} | **เมื่อ:** {l_date}")
+            else:
+                st.caption("🔍 ยังไม่มีข้อมูลการออกเลขในฐานข้อมูล")
+        except Exception as e:
+            st.caption(f"⚠️ ไม่สามารถดึงเลขล่าสุดได้: {str(e)}")
+
+        st.divider() # ขีดเส้นคั่นเพื่อความสวยงาม
+        # --- ส่วนที่เพิ่มใหม่: แสดงข้อมูลล่าสุด ---
+        try:
             df = conn.read()
             if df is not None and not df.empty:
                 # ดึงข้อมูลแถวล่าสุด
