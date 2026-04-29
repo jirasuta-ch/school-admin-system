@@ -55,23 +55,23 @@ if st.session_state.page == 'main':
         col1, col2, col3 = st.columns(3)
         # ... โค้ดปุ่มกดของคุณครู ...
     
-    with col1:
-        if st.button("📝 บันทึกข้อความ", use_container_width=True):
-            st.session_state.selected_type = "บันทึกข้อความ"
-            st.session_state.page = 'form'
-            st.rerun()
-            
-    with col2:
-        if st.button("📜 เลขคำสั่ง", use_container_width=True):
-            st.session_state.selected_type = "คำสั่ง"
-            st.session_state.page = 'form'
-            st.rerun()
-            
-    with col3:
-        if st.button("📩 เลขหนังสือส่ง", use_container_width=True):
-            st.session_state.selected_type = "หนังสือส่ง"
-            st.session_state.page = 'form'
-            st.rerun()
+        with col1:
+            if st.button("📝 บันทึกข้อความ", use_container_width=True):
+                st.session_state.selected_type = "บันทึกข้อความ"
+                st.session_state.page = 'form'
+                st.rerun()
+                
+        with col2:
+            if st.button("📜 เลขคำสั่ง", use_container_width=True):
+                st.session_state.selected_type = "คำสั่ง"
+                st.session_state.page = 'form'
+                st.rerun()
+                
+        with col3:
+            if st.button("📩 เลขหนังสือส่ง", use_container_width=True):
+                st.session_state.selected_type = "หนังสือส่ง"
+                st.session_state.page = 'form'
+                st.rerun()
 
 # --- หน้ากรอกข้อมูล (Form Page) ---
 elif st.session_state.page == 'form':
