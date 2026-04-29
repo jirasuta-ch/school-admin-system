@@ -71,24 +71,24 @@ def get_data():
 def get_next_number(df, doc_type):
     current_year = datetime.now().year + 543
     
-    # --- ตั้งค่าเลขล่าสุดจากสมุดมือที่นี่ ---
+    # ตั้งค่าบุญเก่า (Offset)
     offsets = {
-        "บันทึกข้อความ": 0,    # เริ่มใหม่ใส่ 0
-        "เลขคำสั่ง": 0,        # เริ่มใหม่ใส่ 0
-        "เลขหนังสือส่ง": 57    # ต่อจากสมุดมือเล่มเก่าที่เลข 57
+        "บันทึกข้อความ": 0,
+        "เลขคำสั่ง": 0,
+        "เลขหนังสือส่ง": 57
     }
     
-    # ดึงค่าบุญเก่า (Offset) ถ้าไม่มีให้เป็น 0
     start_num = offsets.get(doc_type, 0)
-    
-    # กรณีไม่มีข้อมูลใน Google Sheets เลย
+
+    # ถ้าไม่มีข้อมูลใน Sheets เลย หรือกรองแล้วไม่เจอประเภทนั้น
+    # ระบบจะใช้ start_num (57) + 0 + 1 = 58 ทันที
     if df is None or df.empty:
         return f"{start_num + 1}/{current_year}"
-    
-    # กรองข้อมูลที่มีในระบบออนไลน์
+
+    # กรองข้อมูลตามประเภท
     filtered_df = df[df['ประเภท'] == doc_type]
     
-    # เลขถัดไป = (บุญเก่า) + (จำนวนแถวออนไลน์) + 1
+    # คำนวณเลขถัดไป
     next_num = start_num + len(filtered_df) + 1
     return f"{next_num}/{current_year}"
 
