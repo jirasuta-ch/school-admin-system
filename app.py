@@ -14,18 +14,32 @@ st.markdown("""
         font-family: 'Kanit', sans-serif !important;
     }
 
-    /* 2. สไตล์ปุ่มแบบแยกสีตามลำดับ (วิธีนี้แม่นที่สุดในตอนนี้) */
-    /* ปุ่มที่ 1: บันทึกข้อความ */
-    div[data-testid="column"]:nth-of-type(1) button {
-        background-color: #E0F2FE !important; /* ฟ้าซอฟต์ */
-    }
-    /* ปุ่มที่ 2: เลขคำสั่ง */
-    div[data-testid="column"]:nth-of-type(2) button {
-        background-color: #DCFCE7 !important; /* เขียวซอฟต์ */
-    }
-    /* ปุ่มที่ 3: เลขหนังสือส่ง */
-    div[data-testid="column"]:nth-of-type(3) button {
-        background-color: #FFEDD5 !important; /* ส้มซอฟต์ */
+  # --- ส่วนปุ่มกด 3 ปุ่มแบบสาดสีตรงตัว ---
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            # สาดสีฟ้าใส่ปุ่มนี้โดยเฉพาะ
+            st.markdown('<style>div[data-testid="column"]:nth-of-type(1) button { background-color: #E0F2FE !important; }</style>', unsafe_allow_html=True)
+            if st.button("📝 บันทึกข้อความ", use_container_width=True):
+                st.session_state.selected_type = "บันทึกข้อความ"
+                st.session_state.page = 'form'
+                st.rerun()
+
+        with col2:
+            # สาดสีเขียวใส่ปุ่มนี้โดยเฉพาะ
+            st.markdown('<style>div[data-testid="column"]:nth-of-type(2) button { background-color: #DCFCE7 !important; }</style>', unsafe_allow_html=True)
+            if st.button("📜 เลขคำสั่ง", use_container_width=True):
+                st.session_state.selected_type = "เลขคำสั่ง"
+                st.session_state.page = 'form'
+                st.rerun()
+
+        with col3:
+            # สาดสีส้มใส่ปุ่มนี้โดยเฉพาะ
+            st.markdown('<style>div[data-testid="column"]:nth-of-type(3) button { background-color: #FFEDD5 !important; }</style>', unsafe_allow_html=True)
+            if st.button("📩 เลขหนังสือส่ง", use_container_width=True):
+                st.session_state.selected_type = "เลขหนังสือส่ง"
+                st.session_state.page = 'form'
+                st.rerun()
     }
 
     /* 3. ตกแต่งปุ่มให้ดูโมเดิร์น */
