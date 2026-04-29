@@ -62,44 +62,26 @@ st.markdown("""
 # หมายเหตุ: คุณครูต้องนำ URL ของ Google Sheets มาใส่ในส่วน secrets หรือตอนใช้งานจริง
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-# ฟังก์ชันดึงข้อมูลล่าสุด (ป้องกันการเกิด nan)
+# ฟังก์ชันดึงข้อมูลล่าสุด
 def get_data():
-    try:
-        df = conn.read(worksheet="Data", ttl="0")
-        return df
-    except:
-        return None
+    return conn.read(worksheet="Data", ttl="0")
 
-# ฟังก์ชันคำนวณเลขถัดไปแบบตั้งค่าเริ่มต้น (Offset)
+# ฟังก์ชันคำนวณเลขถัดไป (แบบดั้งเดิม)
 def get_next_number(df, doc_type):
     current_year = datetime.now().year + 543
-    
-    # ตั้งค่าเลขล่าสุดจากสมุดมือ (แก้ไขตัวเลขที่นี่ได้เลย)
-    offsets = {
-        "บันทึกข้อความ": 0,
-        "เลขคำสั่ง": 0,
-        "เลขหนังสือส่ง": 57
-    }
-    
-    start_num = offsets.get(doc_type, 0)
-    
-    # กรณีไม่มีข้อมูลใน Sheets เลย ให้เริ่มที่ค่าเริ่มต้น + 1
     if df is None or df.empty:
-        return f"{start_num + 1}/{current_year}"
+        return f"1/{current_year}"
     
-    # กรองข้อมูลเฉพาะประเภทที่เลือก
+    # กรองเฉพาะประเภทที่เลือก
     filtered_df = df[df['ประเภท'] == doc_type]
-    
-    # เลขถัดไป = ค่าจากสมุดมือ + จำนวนที่ออกออนไลน์ไปแล้ว + 1
-    next_num = start_num + len(filtered_df) + 1
+    next_num = len(filtered_df) + 1
     return f"{next_num}/{current_year}"
 
-    # กรองข้อมูลตามประเภท
-    filtered_df = df[df['ประเภท'] == doc_type]
-    
-    # คำนวณเลขถัดไป
-    next_num = start_num + len(filtered_df) + 1
-    return f"{next_num}/{current_year}"
+# --- หน้าแรก (Main Menu) ---
+if 'page' not in st.session_state:
+    st.session_state.page = 'main'
+if 'selected_type' not in st.session_state:
+    st.session_state.selected_type = None
 
 # --- หน้าแรก (Main Menu) ---
 if 'page' not in st.session_state:
