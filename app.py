@@ -46,7 +46,8 @@ if st.session_state.page == 'main':
                 # ดึงค่ามาโชว์ (เช็คชื่อหัวตารางใน Sheets ให้ตรงกันนะครับ)
                 l_no = last_row.get('เลขที่', 'ไม่มีข้อมูล')
                 l_sub = last_row.get('เรื่อง', 'ไม่มีข้อมูล')
-                l_date = last_row.get('วันที่', 'ไม่มีข้อมูล')
+                l_date_raw = str(last_row.get('วันที่', 'ไม่มีข้อมูล'))
+                l_date = l_date_raw.split(' ')[0]
                 
                 st.info(f"📢 **เลขล่าสุด:** {l_no} | **เรื่อง:** {l_sub} | **เมื่อ:** {l_date}")
             else:
