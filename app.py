@@ -5,6 +5,47 @@ from datetime import datetime
 
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="ระบบงานสารบรรณโรงเรียน", page_icon="📝")
+# --- ปรับแต่ง UI ให้ดู Modern & Minimal ---
+st.markdown("""
+    <style>
+    /* 1. ปรับแต่งปุ่มกดหลัก */
+    div.stButton > button {
+        width: 100%;
+        height: 110px;               /* สูงกำลังดีสำหรับนิ้วจิ้ม */
+        border-radius: 20px;          /* โค้งมนแบบแอปสมัยใหม่ */
+        border: 1px solid #E0E0E0;    /* ขอบบางๆ สีเทาอ่อน */
+        background-color: #FFFFFF;    /* พื้นหลังสีขาวสะอาด */
+        color: #1E3A8A;               /* ตัวอักษรสีน้ำเงินเข้ม (Modern Navy) */
+        font-size: 22px !important;   /* ขนาดตัวอักษรใหญ่ชัดเจน */
+        font-weight: 700;             /* ตัวหนาพิเศษ */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* เงาบางๆ แบบนุ่มนวล */
+        transition: all 0.3s ease;    /* เวลาเปลี่ยนสีให้ดูสมูท */
+    }
+
+    /* 2. เอฟเฟกต์เวลาเอาเมาส์ชี้ หรือกด (Hover) */
+    div.stButton > button:hover {
+        border: 1px solid #1E3A8A;    /* ขอบเปลี่ยนเป็นสีเข้ม */
+        background-color: #F8FAFC;    /* เปลี่ยนสีพื้นหลังนิดเดียวพอ */
+        color: #2563EB;               /* ตัวอักษรสีฟ้าสว่างขึ้น */
+        transform: translateY(-3px);  /* ปุ่มลอยขึ้นนิดนึงเวลาชี้ */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* เงาเข้มขึ้นตอนลอย */
+    }
+
+    /* 3. ปรับแต่งกล่อง Info (เลขล่าสุด) ให้เข้ากัน */
+    div.stAlert {
+        border-radius: 15px;
+        border: none;
+        background-color: #EFF6FF;    /* สีฟ้าอ่อนแบบพาสเทล */
+        color: #1E3A8A;
+    }
+    
+    /* 4. ปรับหัวข้อ (Title) */
+    h1 {
+        color: #0F172A;
+        font-family: 'Sarabun', sans-serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # เชื่อมต่อกับ Google Sheets
 # หมายเหตุ: คุณครูต้องนำ URL ของ Google Sheets มาใส่ในส่วน secrets หรือตอนใช้งานจริง
