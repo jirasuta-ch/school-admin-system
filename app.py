@@ -32,10 +32,28 @@ if 'selected_type' not in st.session_state:
     st.session_state.selected_type = None
 
 if st.session_state.page == 'main':
-    st.title("🏛️ ระบบออกเลขสารบรรณออนไลน์")
-    st.write("กรุณาเลือกประเภทเอกสารที่ต้องการออกเลข")
-    
-    col1, col2, col3 = st.columns(3)
+        st.title("🏛️ ระบบออกเลขสารบรรณออนไลน์")
+        st.write("กรุณาเลือกประเภทเอกสารที่ต้องการออกเลข")
+
+        # --- ส่วนที่เพิ่มใหม่: แสดงข้อมูลล่าสุด ---
+        try:
+            df = conn.read()
+            if df is not None and not df.empty:
+                # ดึงข้อมูลแถวล่าสุด
+                last_row = df.iloc[-1]
+                
+                # สร้างกล่องสีฟ้าแจ้งเตือนข้อมูลล่าสุด
+                st.info(f"📢 **เลขล่าสุดในระบบ:** {last_row['เลขที่']} | **เรื่อง:** {last_row['เรื่อง']} | **วันที่:** {last_row['วันที่']}")
+            else:
+                st.caption("ยังไม่มีข้อมูลการออกเลขในระบบ")
+        except:
+            st.caption("เชื่อมต่อฐานข้อมูลเพื่อดึงเลขล่าสุดไม่ได้")
+        
+        st.divider() # ขีดเส้นคั่นให้ดูเป็นระเบียบ
+        
+        # --- ปุ่มกด 3 ปุ่มเดิมของคุณครู ---
+        col1, col2, col3 = st.columns(3)
+        # ... โค้ดปุ่มกดของคุณครู ...
     
     with col1:
         if st.button("📝 บันทึกข้อความ", use_container_width=True):
