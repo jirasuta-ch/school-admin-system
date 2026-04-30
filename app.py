@@ -67,26 +67,38 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 def get_data():
     return conn.read(worksheet="Data", ttl="0")
 
-# ฟังก์ชันคำนวณเลขถัดไป (แบบดั้งเดิม)
 def get_next_number(df, doc_type):
     current_year = datetime.now().year + 543
-    
+
     if df is None or df.empty:
         return f"1/{current_year}"
-    
+
     filtered_df = df[df['ประเภท'] == doc_type]
-    
+
     if filtered_df.empty:
         return f"1/{current_year}"
-    
-    # ดึงเลขล่าสุดจริง
+
+    # 🔹 (1) เรียงข้อมูลก่อน
+    if 'timestamp' in filtered_df.columns:
+        filtered_df = filtered_df.sort_values(by='timestamp')
+
     last_no = filtered_df.iloc[-1]['เลขที่']
-    
+
+    # 🔹 (3) กันเลขข้ามปี
+    try:
+        year_in_data = str(last_no).split('/')[1]
+        if str(current_year) != year_in_data:
+            return f"1/{current_year}"
+    except:
+        pass
+
+    # 🔹 (2) กัน format เพี้ยน
     try:
         num = int(str(last_no).split('/')[0])
         return f"{num+1}/{current_year}"
     except:
-        return f"{len(filtered_df)+1}/{current_year}"
+        st.error("รูปแบบเลขที่ผิด เช่น ต้องเป็น 1/2569")
+        return f"1/{current_year}"
 
 # --- หน้าแรก (Main Menu) ---
 if 'page' not in st.session_state:
