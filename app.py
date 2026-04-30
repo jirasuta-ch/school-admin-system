@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 from datetime import datetime
+DOC_TYPES = ["บันทึกข้อความ", "คำสั่ง", "หนังสือส่ง"]
 
 # ตั้งค่าหน้าเว็บ
 st.set_page_config(page_title="ระบบงานสารบรรณโรงเรียน", page_icon="📝")
@@ -154,7 +155,7 @@ if st.session_state.page == 'main':
         # สร้าง 3 คอลัมน์สำหรับโชว์ 3 ประเภทเอกสาร
         sum_col1, sum_col2, sum_col3 = st.columns(3)
         
-        types = ["บันทึกข้อความ", "คำสั่ง", "หนังสือส่ง"]  # ✅ ตรงกับ data จริง
+        types = DOC_TYPES
         cols = [sum_col1, sum_col2, sum_col3]
         
         for doc_type, col in zip(types, cols):
