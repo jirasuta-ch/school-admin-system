@@ -133,19 +133,19 @@ if st.session_state.page == 'main':
     
         with col1:
             if st.button("📝 บันทึกข้อความ", use_container_width=True):
-                st.session_state.selected_type = "บันทึกข้อความ"
+                st.session_state.selected_type = DOC_TYPES[0]
                 st.session_state.page = 'form'
                 st.rerun()
-                
+        
         with col2:
             if st.button("📜 เลขคำสั่ง", use_container_width=True):
-                st.session_state.selected_type = "คำสั่ง"
+                st.session_state.selected_type = DOC_TYPES[1]
                 st.session_state.page = 'form'
                 st.rerun()
-                
+        
         with col3:
             if st.button("📩 เลขหนังสือส่ง", use_container_width=True):
-                st.session_state.selected_type = "หนังสือส่ง"
+                st.session_state.selected_type = DOC_TYPES[2]
                 st.session_state.page = 'form'
                 st.rerun()
 
