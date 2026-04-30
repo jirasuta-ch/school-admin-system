@@ -154,7 +154,7 @@ if st.session_state.page == 'main':
         # สร้าง 3 คอลัมน์สำหรับโชว์ 3 ประเภทเอกสาร
         sum_col1, sum_col2, sum_col3 = st.columns(3)
         
-        types = ["บันทึกข้อความ", "เลขคำสั่ง", "เลขหนังสือส่ง"]
+        types = ["บันทึกข้อความ", "คำสั่ง", "หนังสือส่ง"]  # ✅ ตรงกับ data จริง
         cols = [sum_col1, sum_col2, sum_col3]
         
         for doc_type, col in zip(types, cols):
