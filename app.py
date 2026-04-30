@@ -69,13 +69,23 @@ def get_data():
 # ฟังก์ชันคำนวณเลขถัดไป (แบบดั้งเดิม)
 def get_next_number(df, doc_type):
     current_year = datetime.now().year + 543
+    
     if df is None or df.empty:
         return f"1/{current_year}"
     
-    # กรองเฉพาะประเภทที่เลือก
     filtered_df = df[df['ประเภท'] == doc_type]
-    next_num = len(filtered_df) + 1
-    return f"{next_num}/{current_year}"
+    
+    if filtered_df.empty:
+        return f"1/{current_year}"
+    
+    # ดึงเลขล่าสุดจริง
+    last_no = filtered_df.iloc[-1]['เลขที่']
+    
+    try:
+        num = int(str(last_no).split('/')[0])
+        return f"{num+1}/{current_year}"
+    except:
+        return f"{len(filtered_df)+1}/{current_year}"
 
 # --- หน้าแรก (Main Menu) ---
 if 'page' not in st.session_state:
