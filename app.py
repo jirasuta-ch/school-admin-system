@@ -202,17 +202,22 @@ elif st.session_state.page == 'form':
             name = st.text_input("ชื่อผู้ขอออกเลข (ชื่อ-นามสกุล)")
             submit = st.form_submit_button("✅ ยืนยันออกเลข", use_container_width=True)
             
-            if submit:
-                if subject and name:
-                    # เตรียมข้อมูลบันทึก
-                    new_row = pd.DataFrame([{
-                        "ลำดับ": len(df) + 1,
-                        "วันที่": datetime.now().strftime("%d/%m/%Y %H:%M"),
-                        "ประเภท": doc_type,
-                        "เลขที่": next_no,
-                        "เรื่อง": subject,
-                        "เจ้าของเรื่อง": name
-                    }])
+           if submit:
+            if subject and name:
+            # คำนวณเวลาไทย (UTC+7) และปี พ.ศ.
+            now_th = datetime.now() + timedelta(hours=7)
+            buddhist_year = now_th.year + 543
+            date_str = f"{now_th.strftime('%d/%m/')}{buddhist_year} {now_th.strftime('%H:%M')}"
+
+            # เตรียมข้อมูลบันทึก
+            new_row = pd.DataFrame([{
+                "ลำดับ": len(df) + 1,
+                "วันที่": date_str,
+                "ประเภท": doc_type,
+                "เลขที่": next_no,
+                "เรื่อง": subject,
+                "เจ้าของเรื่อง": name
+            }])
                     
                     # บันทึกลง Google Sheets
                     updated_df = pd.concat([df, new_row], ignore_index=True)
