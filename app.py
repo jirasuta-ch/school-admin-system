@@ -202,8 +202,8 @@ elif st.session_state.page == 'form':
             name = st.text_input("ชื่อผู้ขอออกเลข (ชื่อ-นามสกุล)")
             submit = st.form_submit_button("✅ ยืนยันออกเลข", use_container_width=True)
             
-           if submit:
-            if subject and name:
+        if submit:
+        if subject and name:
             # คำนวณเวลาไทย (UTC+7) และปี พ.ศ.
             now_th = datetime.now() + timedelta(hours=7)
             buddhist_year = now_th.year + 543
@@ -218,10 +218,6 @@ elif st.session_state.page == 'form':
                 "เรื่อง": subject,
                 "เจ้าของเรื่อง": name
             }])
-                    
-                    # บันทึกลง Google Sheets
-                    updated_df = pd.concat([df, new_row], ignore_index=True)
-                    conn.update(worksheet="Data", data=updated_df)
                     
                     # เก็บค่าไปโชว์หน้าสำเร็จ
                     st.session_state.final_no = next_no
